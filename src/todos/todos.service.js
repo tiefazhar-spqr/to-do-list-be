@@ -19,7 +19,7 @@ export const deletedToDo = async (req = request, res = response) => {
         const id = req.params.id
         const intId = parseInt(id);
 
-        const res = await db.todo.delete({
+        const result = await db.todo.delete({
             where: {
                 // id : req.params.id 
                 id : intId
@@ -27,10 +27,62 @@ export const deletedToDo = async (req = request, res = response) => {
         });
 
         return res.status(200).json({
-            message: "deleted success", res
+            message: "deleted success", result
         })
 
         } catch (error) {
         console.error(error.message);
     }
 }
+
+export const createdToDo = async (req = request, res = response) => {
+    try {
+        const { name_todo, price, status } = req.body;
+
+        if(!name_todo && !price) {
+            return req.status(401).json({
+                message: "input is required"
+            })
+        }
+
+        const result = await db.todo.create({
+            data: {
+                name_todo, price, status
+            }
+        });
+
+        return res.status(200).json({
+            message: "create success", result
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "invalid error in creating data", error
+        })
+    }
+};
+
+export const updatedToDo = async (req = request, res = response) => {
+    try {
+        const { name_todo, price, status } = req.body;
+        const { id } = req.params;
+
+        if(!name_todo && !price) {
+            return req.status(401).json({
+            message: "input is required"
+            })
+        }
+
+        const result = await db.todo.update({
+            where: {id},
+            data: {name_todo, price, status}
+        });
+
+        return res.status(200).json({
+            message: "updated successffully", result
+        })
+
+    } catch (error) {
+        
+    }
+};

@@ -1,4 +1,4 @@
-import { prismaClient } from "../src/generated/prisma"
+import { PrismaClient } from "../src/generated/prisma"
 
-const db = new prismaClient();
+const db = new PrismaClient();
 export default db;
